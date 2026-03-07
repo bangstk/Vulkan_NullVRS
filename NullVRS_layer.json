@@ -1,0 +1,21 @@
+{
+	"file_format_version" : "1.0.0",
+	"layer" : {
+		"name": "VK_LAYER_TROVLABS_nullVRS",
+		"type": "GLOBAL",
+		"library_path": "./libNullVRS_layer.so",
+		"api_version": "1.3.0",
+		"implementation_version": "1",
+		"description": "Intercepts & no-ops Variable Rate Shading commands",
+		"functions": {
+			"vkGetInstanceProcAddr": "NullVRS_GetInstanceProcAddr",
+			"vkGetDeviceProcAddr": "NullVRS_GetDeviceProcAddr"
+		},
+		"enable_environment": { 
+			"ENABLE_VK_NULLVRS_1": "1" 
+		},
+		"disable_environment": { 
+			"DISABLE_VK_NULLVRS_1": "1" 
+		}
+	}
+}
