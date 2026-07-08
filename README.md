@@ -7,12 +7,15 @@ single-board computer with a cut down PS5 APU. This hardware does not support Vu
 Shading extension, but does support everything else the game needs such as RT. 
 
 Doom: The Dark Ages requires Variable Rate Shading as of Update 2, and crashes if it is not
-available.
+available (until Update 4 fixed this).
 
 This layer may help other systems which would encounter the same issue, such as Vega or RDNA1 GPUs
 using Mesa's emulate_rt, or a hacked PS5.
 
 I do not know of any other games this layer would be useful for.
+
+**NOTE: NullVRS is no longer needed for Doom: The Dark Ages as of Update 4!**
+I will keep this repo up anyways just in case it is useful for something else.
 
 
 Installation & Usage Instructions
@@ -48,6 +51,8 @@ Vulkan extensions to see if Variable Rate Shading is supported, causing a crash.
 works around this by causing vkCmdSetFragmentShadingRateKHR() to resolve to a function that does
 nothing. Outside of the forced checking at launch, the use of Variable Rate Shading in Doom: TDA
 is completely optional, therefore there is no side effect on the game itself running without it.
+
+**NOTE: This issue was fixed in Doom TDA Update 4!**
 
 
 Other Notes
