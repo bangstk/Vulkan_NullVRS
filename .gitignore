@@ -1,0 +1,6 @@
+src/
+pkg/
+release/
+*.tar.zst
+*.tar.gz
+*.so

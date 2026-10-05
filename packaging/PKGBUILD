@@ -1,0 +1,46 @@
+# Maintainer: Travis Bangs <travbang@gmail.com>
+
+pkgname=vulkan-nullvrs
+pkgver=1.0.0
+pkgrel=1
+pkgdesc='Vulkan layer that intercepts Variable Rate Shading commands and replaces them with no-ops'
+arch=('x86_64')
+url='https://github.com/bangstk/Vulkan_NullVRS'
+license=('BSD2')
+depends=('glibc' 'gcc-libs' 'vulkan-headers' 'vulkan-utility-libraries')
+optdepends=('vulkan-validationlayers: reports errors in the layer interface itself')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/$pkgver.tar.gz")
+sha256sums=('06793832f9f8643aef52d25a2822889d06263f833fbb925af39e3f50001eacd4')
+
+_srcdir=Vulkan_NullVRS-$pkgver
+
+prepare() {
+  cd "$_srcdir"
+
+  # Upstream ships a relative "./libNullVRS_layer.so", which the loader resolves
+  # against the manifest's own directory. Repoint it at the installed library.
+  sed -i 's#"\./libNullVRS_layer\.so"#"/usr/lib/libNullVRS_layer.so"#' \
+    NullVRS_layer.json
+}
+
+# Do NOT add -fvisibility=hidden: the layer's entrypoints are plain `extern "C"` with
+# no visibility attribute, so hiding them would make the layer unloadable.
+build() {
+  cd "$_srcdir"
+  export VULKAN_SDK=/usr
+  make
+}
+
+package() {
+  cd "$_srcdir"
+
+  install -Dm644 libNullVRS_layer.so \
+    "$pkgdir/usr/lib/libNullVRS_layer.so"
+
+  # vk layers are kinda named like this in arch it seems (e.g. MangoHud.x86_64.json)
+  install -Dm644 NullVRS_layer.json \
+    "$pkgdir/usr/share/vulkan/implicit_layer.d/NullVRS_layer.$CARCH.json"
+
+  install -Dm644 LICENSE.txt \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE.txt"
+}
